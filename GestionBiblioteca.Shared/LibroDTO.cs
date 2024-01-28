@@ -16,7 +16,8 @@ namespace GestionBiblioteca.Shared
         [Required(ErrorMessage = "El título es obligatorio")]
         public string Titulo { get; set; } = null!;
 
-        [Required(ErrorMessage = "El autor es obligatorio")]
+        [Required]
+        [Range(1,int.MaxValue, ErrorMessage = "El autor es requerido.")]
         public int AutorId { get; set; }
 
         public AutorDTO? Autor { get; set; }

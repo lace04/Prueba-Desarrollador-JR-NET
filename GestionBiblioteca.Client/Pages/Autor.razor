@@ -1,0 +1,61 @@
+﻿@page "/autor"
+@page "/autor/{idAutorEditar:int}"
+
+@using GestionBiblioteca.Shared;
+@using GestionBiblioteca.Client.Services;
+
+@inject IAutorService autorService;
+@inject NavigationManager navegacion;
+
+<h3>@titulo</h3>
+<EditForm Model="autor" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+    <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <InputText class="form-control" @bind-Value="autor.Nombre"></InputText>
+        <ValidationMessage For="@(() => autor.Nombre)"></ValidationMessage>
+    </div>
+
+    <button class="btn btn-primary" type="submit">@btnTexto</button>
+    <a class="btn btn-warning" href="autores">Volver</a>
+</EditForm>
+@code {
+
+    [Parameter]
+    public int idAutorEditar { get; set; } = 0;
+
+    string titulo = string.Empty;
+    string btnTexto = string.Empty;
+
+    AutorDTO autor = new AutorDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (idAutorEditar != 0)
+        {
+            autor = await autorService.Buscar(idAutorEditar);
+            titulo = "Editar Autor";
+            btnTexto = "Editar";
+        }
+        else
+        {
+            titulo = "Nuevo Autor";
+            btnTexto = "Crear";
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        if (idAutorEditar != 0)
+        {
+            await autorService.Editar(autor);
+        }
+        else
+        {
+            await autorService.Guardar(autor);
+        }
+        navegacion.NavigateTo("autores");
+    }
+
+}

@@ -1,0 +1,80 @@
+﻿@page "/libro"
+@page "/libro/{idLibroEditar:int}"
+
+
+@using GestionBiblioteca.Shared;
+@using GestionBiblioteca.Client.Services;
+
+@inject ILibroService libroService;
+@inject IAutorService AutorService;
+@inject NavigationManager navegacion;
+
+<h3>@titulo</h3>
+<EditForm Model="libro" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator> @* Validación de datos *@
+
+    <div class="mb-3">
+        <label class="form-label">Título</label>
+        <InputText class="form-control" @bind-Value="libro.Titulo"></InputText>
+        <ValidationMessage For="@(() => libro.Titulo)"></ValidationMessage>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Autor</label>
+        <InputSelect class="form-control" @bind-Value="libro.AutorId">
+            <option value="0">Seleccione un autor</option>
+            @foreach (var autor in listaAutor)
+            {
+                <option value="@autor.AutorId">@autor.Nombre</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => libro.AutorId)"></ValidationMessage>
+    </div>
+    <button class="btn btn-primary" type="submit">@btnTexto</button>
+    <a class="btn btn-warning" href="libros">Volver</a>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int idLibroEditar { get; set; } = 0;
+
+    string titulo = string.Empty;
+    string btnTexto = string.Empty;
+
+    LibroDTO libro = new LibroDTO();
+    List<AutorDTO> listaAutor = new List<AutorDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (idLibroEditar != 0)
+        {
+            libro = await libroService.Buscar(idLibroEditar);
+            titulo = "Editar Libro";
+            btnTexto = "Editar";
+        }
+        else
+        {
+            titulo = "Nuevo Libro";
+            btnTexto = "Crear";
+        }
+        listaAutor = await AutorService.Lista();
+    }
+
+    private async Task OnValidSubmit()
+    {
+        int idDevuelto = 0;
+        if (idLibroEditar == 0)
+        {
+            idDevuelto = await libroService.Guardar(libro);
+        }
+        else
+        {
+            idDevuelto = await libroService.Editar(libro);
+        }
+
+        if (idDevuelto != 0)
+        {
+            navegacion.NavigateTo("libros");
+        }
+    }
+}

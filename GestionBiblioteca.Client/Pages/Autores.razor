@@ -1,0 +1,90 @@
+﻿@page "/autores"
+
+@using GestionBiblioteca.Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using GestionBiblioteca.Client.Services;
+
+@inject SweetAlertService Swal;
+@inject IAutorService autorService;
+
+<h3>Autores</h3>
+<a class="btn btn-success btn-sm mb-3" href="autor">Nuevo Autor</a>
+<a class="btn btn-success btn-sm mb-3" href="libro">Nuevo Libro</a>
+
+@* Tabla de Libros *@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (listaAutor != null)
+        {
+            foreach (var autor in listaAutor)
+            {
+                <tr>
+                    <td>@autor.Nombre</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="autor/@autor.AutorId">
+                            <i class="oi oi-pencil"></i>
+                        </a>
+                        <button type="button" class="btn btn-secondary btn-sm ms-2" @onclick="(() => Eliminar(autor.AutorId))">
+                            <i class="oi oi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" align="center">
+                    <img style="width:50px" src="https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    List<AutorDTO>? listaAutor = null; // Lista de Autores
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaAutor = await autorService.Lista();
+    }
+
+    private async Task Eliminar(int id)
+    {
+        var resultado = await Swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¿Está seguro?",
+                Text = "¡No podrá recuperar el registro!",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                ConfirmButtonText = "¡Sí, eliminar!",
+                CancelButtonText = "¡No, cancelar!",
+                ReverseButtons = true
+            });
+
+        if (resultado.IsConfirmed)
+        {
+            await autorService.Eliminar(id);
+            await Swal.FireAsync(
+              "¡Eliminado!",
+              "El registro ha sido eliminado.",
+              SweetAlertIcon.Success);
+            listaAutor = await autorService.Lista();
+        }
+        else if (resultado.IsDismissed)
+        {
+            await Swal.FireAsync(
+              "Cancelado",
+              "El registro no ha sido eliminado.",
+              SweetAlertIcon.Error);
+        }
+    }
+}
