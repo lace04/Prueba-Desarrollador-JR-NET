@@ -64,15 +64,19 @@ En el archivo GestionBiblioteca\GestionBiblioteca.Server\appsettings.json cambia
 
 <h2>Screenshots</h2>
 
-![sc1](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/51767a40-3b5d-47bc-a2e9-13a781884acd)
+
+![sc1](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/8406e2c6-acc6-4463-9f6a-7cea1058987b)
 
 
-![sc2](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/53039ae3-9822-42d0-9461-0bb906bbffa5)
+![sc2](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/98219757-bae5-47d7-943a-0e12f655ca2e)
 
+
+![sc3](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/57f15b55-9c8d-40dd-ac7f-9b0670136bdb)
 
 <h2>Diagrama entidad relación de la base de datos</h2>
 
-![MER](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/de3e19ef-4977-4370-a018-dbccbb2e5a61)
+
+![MER](https://github.com/lace04/Prueba-Desarrollador-JR-NET/assets/73793929/ebc0fb64-9935-4f86-adc8-523fcaf220a4)
 
 
 ### Repositorio
