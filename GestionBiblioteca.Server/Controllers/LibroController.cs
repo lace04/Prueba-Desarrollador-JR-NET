@@ -31,7 +31,7 @@ namespace GestionBiblioteca.Server.Controllers
                 {
                     listaLibroDTO.Add(new LibroDTO
                     {
-                        Id = item.Id,
+                        LibroId = item.LibroId,
                         Titulo = item.Titulo,
                         AutorId = item.AutorId,
                         Autor = new AutorDTO
@@ -62,11 +62,11 @@ namespace GestionBiblioteca.Server.Controllers
 
             try
             {
-                var dbLibro = await _dbContext.Libros.FirstOrDefaultAsync(x => x.Id == id);
+                var dbLibro = await _dbContext.Libros.FirstOrDefaultAsync(x => x.LibroId == id);
 
                 if (dbLibro != null)
                 {
-                    LibroDTO.Id = dbLibro.Id;
+                    LibroDTO.LibroId = dbLibro.LibroId;
                     LibroDTO.Titulo = dbLibro.Titulo;
                     LibroDTO.AutorId = dbLibro.AutorId;
 
@@ -105,10 +105,10 @@ namespace GestionBiblioteca.Server.Controllers
                 _dbContext.Libros.Add(dbLibro); // Agregar a la base de datos
                 await _dbContext.SaveChangesAsync(); // Guardar cambios
 
-                if (dbLibro.Id != 0)
+                if (dbLibro.LibroId != 0)
                 {
                     responseApi.IsSuccess = true;
-                    responseApi.Value = dbLibro.Id;
+                    responseApi.Value = dbLibro.LibroId;
                 }
                 else
                 {
@@ -133,7 +133,7 @@ namespace GestionBiblioteca.Server.Controllers
 
             try
             {
-                var dbLibro = await _dbContext.Libros.FirstOrDefaultAsync(l => l.Id == id);
+                var dbLibro = await _dbContext.Libros.FirstOrDefaultAsync(l => l.LibroId == id);
 
                 if (dbLibro != null)
                 {
@@ -144,7 +144,7 @@ namespace GestionBiblioteca.Server.Controllers
                     await _dbContext.SaveChangesAsync();
 
                     responseApi.IsSuccess = true;
-                    responseApi.Value = dbLibro.Id;
+                    responseApi.Value = dbLibro.LibroId;
                 }
                 else
                 {
@@ -168,7 +168,7 @@ namespace GestionBiblioteca.Server.Controllers
 
             try
             {
-                var dbLibro = await _dbContext.Libros.FirstOrDefaultAsync(l => l.Id == id);
+                var dbLibro = await _dbContext.Libros.FirstOrDefaultAsync(l => l.LibroId == id);
 
                 if (dbLibro != null)
                 {

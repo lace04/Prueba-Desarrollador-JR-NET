@@ -17,6 +17,8 @@ public partial class DbgestionbibliotecaContext : DbContext
 
     public virtual DbSet<Autor> Autores { get; set; }
 
+    public virtual DbSet<Comentario> Comentarios { get; set; }
+
     public virtual DbSet<Libro> Libros { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
@@ -25,7 +27,7 @@ public partial class DbgestionbibliotecaContext : DbContext
     {
         modelBuilder.Entity<Autor>(entity =>
         {
-            entity.HasKey(e => e.AutorId).HasName("PK__Autores__F58AE929B1641F24");
+            entity.HasKey(e => e.AutorId).HasName("PK__Autores__F58AE92979F246D2");
 
             entity.Property(e => e.Nombre)
                 .HasMaxLength(50)
@@ -33,17 +35,26 @@ public partial class DbgestionbibliotecaContext : DbContext
                 .HasColumnName("nombre");
         });
 
+        modelBuilder.Entity<Comentario>(entity =>
+        {
+            entity.HasKey(e => e.ComentarioId).HasName("PK__Comentar__F184493843004107");
+
+            entity.Property(e => e.Comentario1)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("comentario");
+            entity.Property(e => e.LibroId).HasColumnName("LibroID");
+        });
+
         modelBuilder.Entity<Libro>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Libros__3214EC27CC574D60");
+            entity.HasKey(e => e.LibroId).HasName("PK__Libros__35A1ECED84C3564C");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.AutorId).HasColumnName("autorID");
             entity.Property(e => e.Titulo)
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("titulo");
-
         });
 
         OnModelCreatingPartial(modelBuilder);

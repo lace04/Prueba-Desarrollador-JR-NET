@@ -5,7 +5,7 @@ namespace GestionBiblioteca.Server.Models;
 
 public partial class Libro
 {
-    public int Id { get; set; }
+    public int LibroId { get; set; }
 
     public string Titulo { get; set; } = null!;
 
@@ -13,3 +13,4 @@ public partial class Libro
 
     public virtual Autor AutorIdNavigation { get; set; } = null!;
 }
+

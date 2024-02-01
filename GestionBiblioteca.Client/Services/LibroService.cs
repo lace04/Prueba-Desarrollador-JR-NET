@@ -57,7 +57,7 @@ namespace GestionBiblioteca.Client.Services
 
         public async Task<int> Editar(LibroDTO libro)
         {
-            var result = await _http.PutAsJsonAsync($"api/Libro/Editar/{libro.Id}", libro);
+            var result = await _http.PutAsJsonAsync($"api/Libro/Editar/{libro.LibroId}", libro);
             var response = await result.Content.ReadFromJsonAsync<ResponseAPI<int>>();
 
             if (response!.IsSuccess)

@@ -11,7 +11,7 @@ namespace GestionBiblioteca.Shared
     public class LibroDTO
     {
 
-        public int Id { get; set; }
+        public int LibroId { get; set; }
 
         [Required(ErrorMessage = "El título es obligatorio")]
         public string Titulo { get; set; } = null!;

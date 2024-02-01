@@ -13,6 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 
 builder.Services.AddScoped<ILibroService, LibroService>();
 builder.Services.AddScoped<IAutorService, AutorService>();
+builder.Services.AddScoped<IComentarioService, ComentarioService>();
 
 builder.Services.AddSweetAlert2();
 

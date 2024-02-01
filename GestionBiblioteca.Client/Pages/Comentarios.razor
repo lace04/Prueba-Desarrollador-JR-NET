@@ -1,0 +1,65 @@
+﻿@page "/comentarios"
+
+@using GestionBiblioteca.Shared;
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using GestionBiblioteca.Client.Services;
+
+@inject SweetAlertService Swal;
+@inject IComentarioService comentarioService;
+
+<h3>Comentarios</h3>
+<a class="btn btn-success btn-sm mb-3" href="libro">Nuevo Libro</a>
+<a class="btn btn-success btn-sm mb-3" href="autor">Nuevo Autor</a>
+<a class="btn btn-success btn-sm mb-3" href="comentario">Nuevo Comentario</a>
+
+
+@* Tabla de Comentarios *@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Comentario </th>
+      <th>Libro </th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @if (listaComentario != null)
+    {
+      foreach (var comentario in listaComentario)
+      {
+        <tr>
+          <td>@comentario.Comentario1</td>
+          <td>@comentario.Libro!.Titulo</td>
+          <td>
+            <a class="btn btn-primary btn-sm" href="comentario/@comentario.LibroId">
+              <i class="oi oi-pencil"></i>
+            </a>
+            @* <button type="button" class="btn btn-secondary btn-sm ms-2" @onclick="(() => Eliminar(comentario.LibroId))">
+              <i class="oi oi-trash"></i>
+            </button> *@
+          </td>
+        </tr>
+      }
+    }
+    else
+    {
+      <tr>
+        <td colspan="5" align="center">
+          <img style="width:50px" src="https://www.superiorlawncareusa.com/wp-content/uploads/2020/05/loading-gif-png-5.gif" />
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+
+
+
+@code {
+  List<ComentarioDTO>? listaComentario = null;
+
+  protected override async Task OnInitializedAsync()
+  {
+    listaComentario = await comentarioService.Lista();
+  }
+}

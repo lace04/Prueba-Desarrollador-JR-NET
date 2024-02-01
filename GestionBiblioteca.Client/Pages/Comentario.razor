@@ -1,0 +1,82 @@
+﻿@page "/comentario"
+@page "/comentario/{idComentarioEditar:int}"
+
+@using GestionBiblioteca.Shared;
+@using GestionBiblioteca.Client.Services;
+
+@inject IComentarioService comentarioService;
+@inject ILibroService libroService;
+@inject NavigationManager navegacion;
+
+<h3>@titulo</h3>
+
+<EditForm Model="comentario" OnValidSubmit="OnValidSubmit">
+  <DataAnnotationsValidator></DataAnnotationsValidator> @* Validación de datos *@
+
+  <div class="mb-3">
+    <label class="form-label">Comentario</label>
+    <InputText class="form-control" @bind-Value="comentario.Comentario1"></InputText>
+    <ValidationMessage For="@(() => comentario.Comentario1)"></ValidationMessage>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Libro</label>
+    <InputSelect class="form-control" @bind-Value="comentario.LibroId">
+      <option value="0">Seleccione un Libro</option>
+      @foreach (var libro in listaLibro)
+      {
+        <option value="@libro.LibroId">@libro.Titulo</option>
+      }
+    </InputSelect>
+    <ValidationMessage For="@(() => comentario.LibroId)"></ValidationMessage>
+  </div>
+  <button class="btn btn-primary" type="submit">@btnTexto</button>
+  <a class="btn btn-warning" href="comentarios">Volver</a>
+</EditForm>
+
+@code {
+
+  [Parameter]
+  public int idComentarioEditar { get; set; } = 0;
+
+  string titulo = string.Empty;
+  string btnTexto = string.Empty;
+
+  ComentarioDTO comentario = new ComentarioDTO();
+  List<LibroDTO> listaLibro = new List<LibroDTO>();
+
+  protected override async Task OnInitializedAsync()
+  {
+    if (idComentarioEditar != 0)
+    {
+      //libro = await comentarioService.Buscar(idComentarioEditar);
+      titulo = "Editar Libro";
+      btnTexto = "Editar";
+    }
+    else
+    {
+      titulo = "Nuevo Libro";
+      btnTexto = "Crear";
+    }
+    listaLibro = await libroService.Lista();
+  }
+
+  private async Task OnValidSubmit()
+  {
+    int idDevuelto = 0;
+    if (idComentarioEditar == 0)
+    {
+      idDevuelto = await comentarioService.Guardar(comentario);
+    }
+    else
+    {
+      //idDevuelto = await comentarioService.Editar(comentario);
+    }
+
+    if (idDevuelto != 0)
+    {
+      navegacion.NavigateTo("comentarios");
+    }
+  }
+
+}
