@@ -1,6 +1,11 @@
 using GestionBiblioteca.Server.Models;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using GestionBiblioteca.Server.Custom;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -15,6 +20,26 @@ builder.Services.AddDbContext<DbgestionbibliotecaContext>(opciones =>
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("cadenaSQL"));
 });
 
+builder.Services.AddSingleton<Utils>();
+
+builder.Services.AddAuthentication(config =>
+{
+  config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(config =>
+{
+  config.RequireHttpsMetadata = false;
+  config.SaveToken = true;
+  config.TokenValidationParameters = new TokenValidationParameters
+  {
+    ValidateIssuerSigningKey = true,
+    ValidateIssuer = false,
+    ValidateAudience = false,
+    ValidateLifetime = true,
+    ClockSkew = TimeSpan.Zero,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]!))
+  };
+});
 
 builder.Services.AddCors(opciones =>
 {
@@ -36,6 +61,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("nuevaPolitica");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
